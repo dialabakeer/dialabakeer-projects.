@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Day to Remember</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Parisienne&family=Tangerine:wght@700&family=Poppins:wght@300&display=swap" rel="stylesheet">
+
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box;}
+        body,html{
+            width:100%;height:100%;
+            overflow:hidden;
+            background:#f7f1ea;
+            transition:background 2.5s ease-in-out;
+            font-family:'Poppins';
+        }
+
+
+        .intro{
+            position:fixed;top:0;left:0;
+            width:100%;height:100%;
+            display:flex;align-items:center;justify-content:center;
+            background:radial-gradient(circle,#161722,#08090f 80%);
+            z-index:20;
+            transition:opacity 1.5s ease-in-out;
+            cursor:pointer;
+        }
+
+        .heart-container{
+            position:relative;
+            width:260px;height:260px;
+            animation:float 5s ease-in-out infinite;
+        }
+
+        @keyframes float{
+            0%,100%{transform:translateY(0);}
+            50%{transform:translateY(-15px);}
+        }
+
+        .real-heart{
+            width:100%;height:100%;
+            background:radial-gradient(circle at 30% 30%,
+            #ffded9 0%,
+            #f7c7bc 35%,
+            #e7a6a0 55%,
+            #d48b8a 75%,
+            #b46b6a 100%);
+            clip-path:polygon(
+                    50% 15%,
+                    80% 0%,
+                    100% 25%,
+                    100% 60%,
+                    50% 100%,
+                    0% 60%,
+                    0% 25%,
+                    20% 0%
+            );
+            box-shadow:
+                    0 0 60px rgba(255,160,160,0.55),
+                    0 0 130px rgba(255,160,160,0.35),
+                    inset 0 0 45px rgba(255,255,255,0.8);
+            animation:heartbeat 2.6s infinite;
+        }
+
+        @keyframes heartbeat{
+            0%,100%{transform:scale(1);}
+            50%{transform:scale(1.15);}
+        }
+
+        .heart-text{
+            text-align:center;
+            margin-top:20px;
+            color:#f5e6d3;
+            font-family:'Parisienne';
+            font-size:30px;
+            letter-spacing:2px;
+            animation:fade 3s ease forwards;
+            opacity:0;
+        }
+        @keyframes fade{
+            to{opacity:1;}
+        }
+
+        /* hide intro */
+        body.open .intro{
+            opacity:0;
+            pointer-events:none;
+        }
+
+        /* ===================== MAIN SCREEN ===================== */
+
+        .main-view{
+            opacity:0;
+            transition:opacity 2s ease;
+            pointer-events:none;
+        }
+        body.open .main-view{
+            opacity:1;
+            pointer-events:all;
+        }
+
+        canvas#flowers{
+            position:fixed;top:0;left:0;
+            width:100%;height:100%;
+        }
+
+        /* TEXT SECTION */
+        .center-content{
+            position:relative;
+            width:100%;height:100%;
+            display:flex;
+            flex-direction:column;
+            justify-content:center;
+            align-items:center;
+            text-align:center;
+            z-index:5;
+        }
+
+        h1{
+            font-family:'Tangerine';
+            font-size:115px;
+            color:#8B6F47;
+            letter-spacing:4px;
+        }
+
+        .line{
+            width:110px;height:1px;background:#c7b299;
+            margin:25px 0;
+        }
+
+        .quote{
+            font-family:'Parisienne';
+            font-size:34px;
+            max-width:900px;
+            color:#6B574A;
+            line-height:1.8;
+            padding:20px;
+        }
+
+        /* BUTTON */
+        .next-btn{
+            padding:17px 50px;
+            border:2px solid #c9b037;
+            border-radius:45px;
+            font-size:22px;
+            text-decoration:none;
+            color:#8B6F47;
+            letter-spacing:3px;
+            background:rgba(255,255,255,0.5);
+            box-shadow:0 4px 15px rgba(0,0,0,0.15),
+            0 0 25px rgba(201,176,55,0.6);
+            transition:.4s ease;
+        }
+        .next-btn:hover{
+            background:#c9b037;
+            color:white;
+            transform:scale(1.08);
+            box-shadow:
+                    0 6px 25px rgba(201,176,55,1),
+                    0 0 40px rgba(201,176,55,.7);
+        }
+
+        .btn-row{
+            margin-top:45px;
+            display:flex;
+            gap:35px;
+            flex-wrap:wrap;
+            justify-content:center;
+        }
+
+    </style>
+</head>
+<body>
+
+<!-- INTRO HEART -->
+<div class="intro" id="heart">
+    <div class="heart-container">
+        <div class="real-heart"></div>
+        <div class="heart-text">Tap to Enter 💫</div>
+    </div>
+</div>
+
+<!-- MAIN VIEW -->
+<div class="main-view">
+    <canvas id="flowers"></canvas>
+
+    <div class="center-content">
+        <h1>A Day to Remember</h1>
+        <div class="line"></div>
+
+        <p class="quote">
+            "Welcome to <strong>A Day to Remember</strong>, your online home for planning
+            every detail of your dream wedding.
+            From the first ‘yes’ to the last dance, we help you design moments filled with
+            elegance, romance, and unforgettable memories.
+            Choose how you’d like to continue and let the celebration begin."
+        </p>
+
+        <div class="btn-row">
+            <a href="login2.php" class="next-btn">Client Area</a>
+            <a href="login.php" class="next-btn">Admin Login</a>
+        </div>
+    </div>
+</div>
+
+<script>
+    /* =============== OPEN PAGE ON HEART CLICK ================= */
+    document.getElementById("heart").onclick = () => {
+        document.body.classList.add("open");
+    };
+
+    /* =============== FLOWERS CANVAS ================= */
+    const canvas = document.getElementById("flowers");
+    const ctx   = canvas.getContext("2d");
+    canvas.width  = innerWidth;
+    canvas.height = innerHeight;
+
+    class Flower{
+        constructor(){
+            this.reset();
+            this.y = Math.random()*innerHeight;
+        }
+        reset(){
+            this.x = Math.random()*innerWidth;
+            this.y = -50;
+            this.size = 30 + Math.random()*35;
+            this.speed = 1 + Math.random()*2;
+            this.rotation = Math.random()*360;
+            this.rotSpeed = (Math.random()-.5)*4;
+            this.opacity = .6 + Math.random()*.4;
+        }
+        update(){
+            this.y += this.speed;
+            this.rotation += this.rotSpeed;
+            if(this.y>innerHeight+50){ this.reset(); }
+        }
+        draw(){
+            ctx.save();
+            ctx.translate(this.x,this.y);
+            ctx.rotate(this.rotation*Math.PI/180);
+            ctx.globalAlpha = this.opacity;
+
+            const petals = 5;
+            for(let i=0;i<petals;i++){
+                ctx.save();
+                ctx.rotate((Math.PI*2*i)/petals);
+                ctx.beginPath();
+                ctx.ellipse(0,-this.size/3,this.size/2,this.size/1.4,0,0,Math.PI*2);
+                ctx.fillStyle="#ff6fa7";
+                ctx.fill();
+                ctx.restore();
+            }
+
+            ctx.beginPath();
+            ctx.arc(0,0,this.size/4,0,Math.PI*2);
+            ctx.fillStyle="#ffd700";
+            ctx.fill();
+            ctx.restore();
+        }
+    }
+
+    let flowers=[];
+    for(let i=0;i<30;i++){ flowers.push(new Flower()); }
+
+    function animate(){
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+        flowers.forEach(f=>{
+            f.update();f.draw();
+        });
+        requestAnimationFrame(animate);
+    }
+    animate();
+
+    addEventListener("resize",()=>{
+        canvas.width  = innerWidth;
+        canvas.height = innerHeight;
+    });
+</script>
+
+</body>
+</html>
